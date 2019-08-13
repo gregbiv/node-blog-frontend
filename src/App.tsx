@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {GetPost} from "./react-fetchers";
+import {RestfulProvider} from 'restful-react';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => (
+    <RestfulProvider base="http://localhost">
+
+      <GetPost>
+        { response => (
+            response
+                ? <div>
+                  <h1>Posts</h1>
+                  <ul>
+                    {response.items.map(post => (
+                        <li>
+                          {post.title}
+                        </li>
+                    ))}
+                  </ul>
+                </div>
+                : <div>ERROR</div>
+        )}
+      </GetPost>
+    </RestfulProvider>
+);
 
 export default App;
